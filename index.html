@@ -1,0 +1,2255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ACFA Player of the Week</title>
+
+<meta name="theme-color" content="#10244a">
+
+<style>
+/* =========================================================
+   ACFA PLAYER OF THE WEEK
+   One-file edition
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --deep-blue: #07162f;
+  --blue: #123b6d;
+  --sky: #5ca9dc;
+  --light-blue: #bce6ff;
+  --ivory: #fff9e9;
+  --gold: #e8c46d;
+  --gold-bright: #ffe9a9;
+  --gold-dark: #a97d29;
+  --white: #ffffff;
+  --glass: rgba(255,255,255,.10);
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  background:
+    radial-gradient(
+      circle at 50% 90%,
+      #ffd98a 0%,
+      #8fc8ec 28%,
+      #376fa6 55%,
+      #10294d 80%,
+      #06132a 100%
+    );
+
+  color: white;
+  overflow-x: hidden;
+}
+
+/* =========================================================
+   BACKGROUND
+   ========================================================= */
+
+.scene {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 55px 18px 65px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.sky-glow {
+  position: absolute;
+  left: 50%;
+  bottom: -260px;
+
+  width: 1000px;
+  height: 700px;
+
+  transform: translateX(-50%);
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(255,239,177,.98) 0%,
+      rgba(255,200,100,.60) 22%,
+      rgba(255,200,100,.18) 48%,
+      transparent 72%
+    );
+
+  filter: blur(8px);
+  z-index: -8;
+
+  animation: sunPulse 8s ease-in-out infinite;
+}
+
+@keyframes sunPulse {
+  0%,100% {
+    opacity: .78;
+    transform: translateX(-50%) scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.08);
+  }
+}
+
+/* =========================================================
+   SUN RAYS
+   ========================================================= */
+
+.rays {
+  position: absolute;
+  inset: -30%;
+  z-index: -7;
+  pointer-events: none;
+
+  background:
+    conic-gradient(
+      from 180deg at 50% 87%,
+      transparent 0deg,
+      rgba(255,240,177,.10) 7deg,
+      transparent 14deg,
+      transparent 28deg,
+      rgba(255,245,190,.12) 37deg,
+      transparent 47deg,
+      transparent 62deg,
+      rgba(255,242,182,.10) 72deg,
+      transparent 83deg,
+      transparent 100deg,
+      rgba(255,244,190,.13) 112deg,
+      transparent 125deg,
+      transparent 360deg
+    );
+
+  transform-origin: 50% 87%;
+
+  animation: rayMove 28s linear infinite;
+}
+
+@keyframes rayMove {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   CLOUDS
+   ========================================================= */
+
+.cloud-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -6;
+}
+
+.cloud {
+  position: absolute;
+  width: 360px;
+  height: 85px;
+
+  background: rgba(255,255,255,.12);
+  border-radius: 100px;
+
+  filter: blur(15px);
+}
+
+.cloud::before,
+.cloud::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: inherit;
+}
+
+.cloud::before {
+  width: 150px;
+  height: 150px;
+  left: 55px;
+  top: -65px;
+}
+
+.cloud::after {
+  width: 190px;
+  height: 190px;
+  right: 35px;
+  top: -85px;
+}
+
+.cloud-1 {
+  top: 12%;
+  left: -400px;
+  animation: cloudTravel 42s linear infinite;
+}
+
+.cloud-2 {
+  top: 34%;
+  left: -500px;
+  transform: scale(.7);
+  opacity: .55;
+  animation: cloudTravel 58s linear infinite;
+  animation-delay: -24s;
+}
+
+.cloud-3 {
+  top: 60%;
+  left: -450px;
+  transform: scale(1.15);
+  opacity: .35;
+  animation: cloudTravel 68s linear infinite;
+  animation-delay: -40s;
+}
+
+@keyframes cloudTravel {
+  from {
+    left: -500px;
+  }
+
+  to {
+    left: calc(100% + 500px);
+  }
+}
+
+/* =========================================================
+   PARTICLES
+   ========================================================= */
+
+#particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -4;
+}
+
+.particle {
+  position: absolute;
+
+  width: var(--size);
+  height: var(--size);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,230,1) 0%,
+      rgba(255,221,137,.85) 35%,
+      rgba(255,196,83,.18) 65%,
+      transparent 72%
+    );
+
+  box-shadow:
+    0 0 8px rgba(255,220,125,.8),
+    0 0 20px rgba(255,209,104,.25);
+
+  opacity: 0;
+
+  animation:
+    particleRise var(--duration) linear infinite,
+    particleTwinkle 3.5s ease-in-out infinite;
+
+  animation-delay: var(--delay);
+}
+
+@keyframes particleRise {
+  0% {
+    transform:
+      translate3d(0, 110vh, 0)
+      scale(.4);
+    opacity: 0;
+  }
+
+  12% {
+    opacity: var(--opacity);
+  }
+
+  70% {
+    opacity: var(--opacity);
+  }
+
+  100% {
+    transform:
+      translate3d(var(--drift), -15vh, 0)
+      scale(1.15);
+    opacity: 0;
+  }
+}
+
+@keyframes particleTwinkle {
+  0%,100% {
+    filter: brightness(.8);
+  }
+
+  50% {
+    filter: brightness(1.8);
+  }
+}
+
+/* =========================================================
+   CLASSICAL ARCHITECTURAL SILHOUETTE
+   ========================================================= */
+
+.temple {
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+
+  width: min(1050px, 120vw);
+  height: 235px;
+
+  transform: translateX(-50%);
+
+  opacity: .14;
+  z-index: -5;
+
+  border-top:
+    16px solid rgba(255,248,220,.55);
+
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 50px,
+      rgba(255,249,226,.45) 51px 70px,
+      transparent 71px 125px
+    );
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      black 0%,
+      black 70%,
+      transparent 100%
+    );
+}
+
+/* =========================================================
+   MAIN CONTENT
+   ========================================================= */
+
+.wrapper {
+  width: min(760px, 100%);
+  text-align: center;
+
+  animation: revealPage 1.4s ease both;
+}
+
+@keyframes revealPage {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.acfa-label {
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 5px;
+
+  color: rgba(255,255,255,.84);
+
+  text-transform: uppercase;
+  margin-bottom: 11px;
+}
+
+.crown {
+  font-size: 26px;
+  color: var(--gold-bright);
+
+  text-shadow:
+    0 0 10px rgba(255,220,120,.7);
+
+  animation: crownGlow 3.5s ease-in-out infinite;
+}
+
+@keyframes crownGlow {
+  50% {
+    text-shadow:
+      0 0 14px rgba(255,235,150,1),
+      0 0 35px rgba(255,208,90,.65);
+  }
+}
+
+.title {
+  margin-top: 6px;
+
+  font-size:
+    clamp(29px, 7vw, 56px);
+
+  line-height: 1;
+  letter-spacing: 1px;
+
+  color: #fff9e4;
+
+  text-shadow:
+    0 2px 0 rgba(148,103,22,.5),
+    0 6px 25px rgba(0,0,0,.3);
+}
+
+.subtitle {
+  margin: 13px auto 27px;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+
+  color: var(--gold-bright);
+
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   FEATURE CARD
+   ========================================================= */
+
+.card {
+  position: relative;
+
+  width: min(590px, 100%);
+  margin: auto;
+
+  padding:
+    45px 30px 34px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.17),
+      rgba(255,255,255,.06)
+    );
+
+  border:
+    1px solid rgba(255,239,179,.46);
+
+  border-radius: 28px;
+
+  backdrop-filter: blur(17px);
+  -webkit-backdrop-filter: blur(17px);
+
+  box-shadow:
+    0 25px 75px rgba(2,13,35,.43),
+    inset 0 1px rgba(255,255,255,.28),
+    0 0 45px rgba(255,218,117,.11);
+
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+
+  border-radius: inherit;
+
+  padding: 1px;
+
+  background:
+    linear-gradient(
+      120deg,
+      transparent,
+      rgba(255,246,202,.9),
+      transparent
+    );
+
+  -webkit-mask:
+    linear-gradient(#fff 0 0)
+    content-box,
+    linear-gradient(#fff 0 0);
+
+  -webkit-mask-composite: xor;
+
+  mask-composite: exclude;
+
+  animation: borderShimmer 5s linear infinite;
+}
+
+@keyframes borderShimmer {
+  from {
+    filter: hue-rotate(0deg);
+  }
+
+  50% {
+    opacity: .55;
+  }
+
+  to {
+    filter: hue-rotate(8deg);
+  }
+}
+
+/* =========================================================
+   AVATAR
+   ========================================================= */
+
+.avatar-stage {
+  position: relative;
+
+  width: 205px;
+  height: 205px;
+
+  margin: 0 auto 24px;
+
+  display: grid;
+  place-items: center;
+}
+
+.avatar-glow {
+  position: absolute;
+  inset: -40px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,233,159,.35),
+      rgba(255,212,95,.08) 50%,
+      transparent 70%
+    );
+
+  animation: portraitGlow 4s ease-in-out infinite;
+}
+
+@keyframes portraitGlow {
+  50% {
+    transform: scale(1.13);
+    opacity: .75;
+  }
+}
+
+/* Laurel */
+
+.laurel {
+  position: absolute;
+  inset: -15px;
+
+  border:
+    3px solid rgba(255,226,139,.70);
+
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 18px rgba(255,211,96,.4),
+    inset 0 0 18px rgba(255,211,96,.25);
+
+  animation: laurelFloat 6s ease-in-out infinite;
+}
+
+.laurel::before,
+.laurel::after {
+  content: "❧";
+
+  position: absolute;
+  top: 50%;
+
+  color: var(--gold-bright);
+
+  font-size: 38px;
+
+  text-shadow:
+    0 0 12px rgba(255,221,120,.65);
+}
+
+.laurel::before {
+  left: -22px;
+  transform:
+    translateY(-50%)
+    rotate(-45deg);
+}
+
+.laurel::after {
+  right: -22px;
+  transform:
+    translateY(-50%)
+    rotate(135deg);
+}
+
+@keyframes laurelFloat {
+  0%,100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.avatar-ring {
+  width: 174px;
+  height: 174px;
+
+  border-radius: 50%;
+
+  padding: 6px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fff6cf,
+      #d8a944,
+      #fff2b4,
+      #a77827
+    );
+
+  box-shadow:
+    0 10px 40px rgba(0,0,0,.32),
+    0 0 35px rgba(255,220,120,.25);
+
+  z-index: 2;
+}
+
+.avatar-ring img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #315b86,
+      #122d4d
+    );
+}
+
+/* =========================================================
+   PLAYER INFO
+   ========================================================= */
+
+.honor {
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 3px;
+
+  text-transform: uppercase;
+
+  color: var(--gold-bright);
+
+  margin-bottom: 8px;
+}
+
+.player-name {
+  font-size:
+    clamp(30px, 7vw, 47px);
+
+  line-height: 1.05;
+
+  overflow-wrap: anywhere;
+
+  color: white;
+
+  text-shadow:
+    0 4px 20px rgba(0,0,0,.27);
+}
+
+.real-name {
+  min-height: 18px;
+
+  margin-top: 8px;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 14px;
+
+  color: rgba(255,255,255,.73);
+}
+
+.rating-area {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  margin-top: 23px;
+  padding: 10px 18px;
+
+  border-top:
+    1px solid rgba(255,255,255,.15);
+
+  border-bottom:
+    1px solid rgba(255,255,255,.15);
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+}
+
+.rating-number {
+  color: #fff4c5;
+
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.rating-type {
+  color: rgba(255,255,255,.7);
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+
+  text-transform: uppercase;
+}
+
+.title-badge {
+  display: none;
+
+  margin-left: 3px;
+  padding: 4px 7px;
+
+  border-radius: 6px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #d7a72c,
+      #f5d775
+    );
+
+  color: #17223a;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.member-since {
+  margin-top: 17px;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  color: rgba(255,255,255,.60);
+
+  font-size: 12px;
+  letter-spacing: .5px;
+}
+
+/* =========================================================
+   WEEK
+   ========================================================= */
+
+.week {
+  margin-top: 25px;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+
+  color: rgba(255,247,210,.83);
+
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   PROFILE BUTTON
+   ========================================================= */
+
+.profile-button {
+  position: relative;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 25px;
+
+  min-width: 230px;
+
+  padding: 14px 25px;
+
+  border:
+    1px solid rgba(255,238,182,.7);
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,241,189,.96),
+      rgba(226,184,86,.96)
+    );
+
+  color: #13233a;
+
+  text-decoration: none;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+
+  box-shadow:
+    0 9px 25px rgba(0,0,0,.18),
+    0 0 20px rgba(255,214,106,.15);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.profile-button:hover {
+  transform:
+    translateY(-3px)
+    scale(1.025);
+
+  box-shadow:
+    0 13px 32px rgba(0,0,0,.25),
+    0 0 30px rgba(255,226,126,.30);
+}
+
+.profile-button:active {
+  transform: scale(.98);
+}
+
+/* =========================================================
+   MOTTO
+   ========================================================= */
+
+.motto {
+  margin-top: 25px;
+
+  font-style: italic;
+
+  color: rgba(255,255,255,.87);
+
+  font-size: 16px;
+}
+
+.motto strong {
+  color: #fff5c8;
+}
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.loading {
+  min-height: 490px;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 17px;
+}
+
+.loading-ring {
+  width: 55px;
+  height: 55px;
+
+  border-radius: 50%;
+
+  border:
+    2px solid rgba(255,255,255,.18);
+
+  border-top-color: var(--gold-bright);
+
+  animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 3px;
+
+  color: rgba(255,255,255,.7);
+
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.error {
+  display: none;
+  padding: 40px 20px;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+}
+
+.error-title {
+  color: var(--gold-bright);
+  font-weight: 900;
+  margin-bottom: 12px;
+}
+
+.error-message {
+  color: rgba(255,255,255,.75);
+  line-height: 1.65;
+  font-size: 14px;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.footer {
+  margin-top: 24px;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+
+  color: rgba(255,255,255,.42);
+
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .scene {
+    padding:
+      40px 13px
+      48px;
+  }
+
+  .card {
+    padding:
+      39px 18px
+      29px;
+    border-radius: 23px;
+  }
+
+  .avatar-stage {
+    width: 180px;
+    height: 180px;
+  }
+
+  .avatar-ring {
+    width: 153px;
+    height: 153px;
+  }
+
+  .laurel {
+    inset: -10px;
+  }
+
+  .title {
+    font-size: 36px;
+  }
+
+  .profile-button {
+    width: 100%;
+    max-width: 285px;
+  }
+
+  .temple {
+    opacity: .09;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION ACCESSIBILITY
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<main class="scene">
+
+  <!-- Hopeful animated atmosphere -->
+  <div class="sky-glow"></div>
+  <div class="rays"></div>
+
+  <div class="cloud-layer">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+  </div>
+
+  <div id="particles"></div>
+
+  <div class="temple"></div>
+
+  <!-- Main experience -->
+  <section class="wrapper">
+
+    <div class="acfa-label">
+      And Chess For All
+    </div>
+
+    <div class="crown">
+      ♔
+    </div>
+
+    <h1 class="title">
+      Player of the Week
+    </h1>
+
+    <div class="subtitle">
+      Weekly Member Spotlight
+    </div>
+
+    <article class="card">
+
+      <!-- Loading state -->
+      <div
+        class="loading"
+        id="loading"
+      >
+
+        <div class="loading-ring"></div>
+
+        <div class="loading-text">
+          Selecting this week's player
+        </div>
+
+      </div>
+
+      <!-- Player content -->
+      <div
+        id="playerContent"
+        style="display:none;"
+      >
+
+        <div class="avatar-stage">
+
+          <div class="avatar-glow"></div>
+
+          <div class="laurel"></div>
+
+          <div class="avatar-ring">
+
+            <img
+              id="avatar"
+              alt="Player avatar"
+            >
+
+          </div>
+
+        </div>
+
+        <div class="honor">
+          ✦ ACFA Member Spotlight ✦
+        </div>
+
+        <h2
+          class="player-name"
+          id="username"
+        >
+          @Player
+        </h2>
+
+        <div
+          class="real-name"
+          id="realName"
+        ></div>
+
+        <div class="rating-area">
+
+          <span
+            class="rating-number"
+            id="rating"
+          >
+            —
+          </span>
+
+          <span
+            class="rating-type"
+            id="ratingType"
+          >
+            Highest Rating
+          </span>
+
+          <span
+            class="title-badge"
+            id="titleBadge"
+          ></span>
+
+        </div>
+
+        <div
+          class="member-since"
+          id="memberSince"
+        ></div>
+
+        <div
+          class="week"
+          id="weekDisplay"
+        ></div>
+
+        <a
+          class="profile-button"
+          id="profileButton"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          VIEW CHESS.COM PROFILE
+        </a>
+
+        <div class="motto">
+          <strong>
+            Every Player Belongs
+          </strong>
+          •
+          Every Move Matters.
+        </div>
+
+      </div>
+
+      <!-- Error state -->
+      <div
+        class="error"
+        id="error"
+      >
+
+        <div class="error-title">
+          PLAYER SPOTLIGHT UNAVAILABLE
+        </div>
+
+        <div
+          class="error-message"
+          id="errorMessage"
+        >
+          The Chess.com API could not be reached.
+        </div>
+
+      </div>
+
+    </article>
+
+    <div class="footer">
+      And Chess For All • ACFA
+    </div>
+
+  </section>
+
+</main>
+
+
+<script>
+/* =========================================================
+   ACFA PLAYER OF THE WEEK
+   ========================================================= */
+
+/*
+   Your Chess.com club slug.
+*/
+const CLUB_SLUG =
+  "and-chess-for-all-official";
+
+/*
+   ACFA operates in Central Time.
+
+   This ensures the weekly selection changes according
+   to ACFA's calendar rather than the viewer's location.
+*/
+const ACFA_TIMEZONE =
+  "America/Chicago";
+
+
+/* =========================================================
+   PARTICLE SYSTEM
+   ========================================================= */
+
+function createParticles() {
+
+  const container =
+    document.getElementById("particles");
+
+  /*
+     Automatically reduce effects on smaller devices.
+  */
+
+  const mobile =
+    window.innerWidth < 600;
+
+  const particleCount =
+    mobile ? 38 : 75;
+
+  for (
+    let i = 0;
+    i < particleCount;
+    i++
+  ) {
+
+    const particle =
+      document.createElement("span");
+
+    particle.className =
+      "particle";
+
+    const size =
+      Math.random() * 5 + 2;
+
+    const duration =
+      Math.random() * 17 + 15;
+
+    const delay =
+      Math.random() * -30;
+
+    const drift =
+      (Math.random() * 180 - 90) + "px";
+
+    const opacity =
+      Math.random() * .55 + .25;
+
+    particle.style.left =
+      Math.random() * 100 + "%";
+
+    particle.style.setProperty(
+      "--size",
+      size + "px"
+    );
+
+    particle.style.setProperty(
+      "--duration",
+      duration + "s"
+    );
+
+    particle.style.setProperty(
+      "--delay",
+      delay + "s"
+    );
+
+    particle.style.setProperty(
+      "--drift",
+      drift
+    );
+
+    particle.style.setProperty(
+      "--opacity",
+      opacity
+    );
+
+    container.appendChild(
+      particle
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   CENTRAL-TIME DATE
+   ========================================================= */
+
+function getCentralDate() {
+
+  const formatter =
+    new Intl.DateTimeFormat(
+      "en-US",
+      {
+        timeZone:
+          ACFA_TIMEZONE,
+
+        year:
+          "numeric",
+
+        month:
+          "2-digit",
+
+        day:
+          "2-digit"
+      }
+    );
+
+  const parts =
+    formatter.formatToParts(
+      new Date()
+    );
+
+  const values = {};
+
+  parts.forEach(
+    part => {
+
+      if (
+        part.type !==
+        "literal"
+      ) {
+
+        values[
+          part.type
+        ] =
+          Number(
+            part.value
+          );
+
+      }
+
+    }
+  );
+
+  /*
+     Noon UTC prevents most date-boundary
+     complications while calculating
+     the ACFA calendar week.
+  */
+
+  return new Date(
+    Date.UTC(
+      values.year,
+      values.month - 1,
+      values.day,
+      12
+    )
+  );
+
+}
+
+
+/* =========================================================
+   WEEK INFORMATION
+   Sunday → Saturday
+   ========================================================= */
+
+function getWeekInfo() {
+
+  const today =
+    getCentralDate();
+
+  const day =
+    today.getUTCDay();
+
+  const sunday =
+    new Date(today);
+
+  sunday.setUTCDate(
+    today.getUTCDate() - day
+  );
+
+  const saturday =
+    new Date(sunday);
+
+  saturday.setUTCDate(
+    sunday.getUTCDate() + 6
+  );
+
+  /*
+     This becomes our deterministic
+     weekly selection key.
+  */
+
+  const year =
+    sunday.getUTCFullYear();
+
+  const month =
+    String(
+      sunday.getUTCMonth() + 1
+    ).padStart(2, "0");
+
+  const date =
+    String(
+      sunday.getUTCDate()
+    ).padStart(2, "0");
+
+  const key =
+    `${year}-${month}-${date}`;
+
+  return {
+    start: sunday,
+    end: saturday,
+    key
+  };
+
+}
+
+
+/* =========================================================
+   SIMPLE DETERMINISTIC HASH
+   ========================================================= */
+
+function hashString(text) {
+
+  let hash =
+    2166136261;
+
+  for (
+    let i = 0;
+    i < text.length;
+    i++
+  ) {
+
+    hash ^=
+      text.charCodeAt(i);
+
+    hash =
+      Math.imul(
+        hash,
+        16777619
+      );
+
+  }
+
+  return hash >>> 0;
+
+}
+
+
+/* =========================================================
+   FORMAT WEEK
+   ========================================================= */
+
+function formatWeek(
+  start,
+  end
+) {
+
+  const startMonth =
+    start.toLocaleDateString(
+      "en-US",
+      {
+        month:
+          "long",
+
+        timeZone:
+          "UTC"
+      }
+    );
+
+  const endMonth =
+    end.toLocaleDateString(
+      "en-US",
+      {
+        month:
+          "long",
+
+        timeZone:
+          "UTC"
+      }
+    );
+
+  const startDay =
+    start.getUTCDate();
+
+  const endDay =
+    end.getUTCDate();
+
+  const year =
+    end.getUTCFullYear();
+
+  if (
+    startMonth ===
+    endMonth
+  ) {
+
+    return (
+      `Featured Week • ` +
+      `${startMonth} ` +
+      `${startDay}–${endDay}, ` +
+      `${year}`
+    );
+
+  }
+
+  return (
+    `Featured Week • ` +
+    `${startMonth} ${startDay} – ` +
+    `${endMonth} ${endDay}, ` +
+    `${year}`
+  );
+
+}
+
+
+/* =========================================================
+   CHESS.COM REQUEST
+   ========================================================= */
+
+async function chessFetch(
+  url
+) {
+
+  const response =
+    await fetch(
+      url,
+      {
+        headers: {
+          "Accept":
+            "application/json"
+        }
+      }
+    );
+
+  if (
+    !response.ok
+  ) {
+
+    throw new Error(
+      `Chess.com API returned ${response.status}`
+    );
+
+  }
+
+  return response.json();
+
+}
+
+
+/* =========================================================
+   EXTRACT CLUB MEMBERS
+   ========================================================= */
+
+function extractMembers(
+  data
+) {
+
+  /*
+     Chess.com's club-members endpoint
+     groups membership data.
+
+     We collect every array found in the
+     response, then remove duplicates.
+  */
+
+  const members = [];
+
+  Object.values(
+    data
+  ).forEach(
+    group => {
+
+      if (
+        Array.isArray(group)
+      ) {
+
+        group.forEach(
+          member => {
+
+            if (
+              member &&
+              member.username
+            ) {
+
+              members.push(
+                member
+              );
+
+            }
+
+          }
+        );
+
+      }
+
+    }
+  );
+
+  const unique =
+    new Map();
+
+  members.forEach(
+    member => {
+
+      const key =
+        member.username
+          .toLowerCase();
+
+      if (
+        !unique.has(key)
+      ) {
+
+        unique.set(
+          key,
+          member
+        );
+
+      }
+
+    }
+  );
+
+  /*
+     Sorting is IMPORTANT.
+
+     Chess.com's response ordering can
+     change.
+
+     Sorting guarantees every visitor
+     uses the same member order.
+  */
+
+  return [
+    ...unique.values()
+  ].sort(
+    (a, b) =>
+      a.username.localeCompare(
+        b.username
+      )
+  );
+
+}
+
+
+/* =========================================================
+   SELECT PLAYER
+   ========================================================= */
+
+function selectWeeklyPlayer(
+  members,
+  weekKey
+) {
+
+  if (
+    !members.length
+  ) {
+
+    throw new Error(
+      "No club members were returned."
+    );
+
+  }
+
+  /*
+     Current week.
+  */
+
+  const currentHash =
+    hashString(
+      `${CLUB_SLUG}|${weekKey}|ACFA`
+    );
+
+  let index =
+    currentHash %
+    members.length;
+
+  /*
+     Determine previous week's winner
+     so we can prevent back-to-back
+     selections.
+  */
+
+  if (
+    members.length > 1
+  ) {
+
+    const currentWeek =
+      getWeekInfo();
+
+    const previous =
+      new Date(
+        currentWeek.start
+      );
+
+    previous.setUTCDate(
+      previous.getUTCDate() - 7
+    );
+
+    const prevYear =
+      previous.getUTCFullYear();
+
+    const prevMonth =
+      String(
+        previous.getUTCMonth() + 1
+      ).padStart(2, "0");
+
+    const prevDay =
+      String(
+        previous.getUTCDate()
+      ).padStart(2, "0");
+
+    const previousKey =
+      `${prevYear}-${prevMonth}-${prevDay}`;
+
+    const previousHash =
+      hashString(
+        `${CLUB_SLUG}|${previousKey}|ACFA`
+      );
+
+    const previousIndex =
+      previousHash %
+      members.length;
+
+    /*
+       If this week's hash selects the
+       same position, move forward one.
+    */
+
+    if (
+      index ===
+      previousIndex
+    ) {
+
+      index =
+        (index + 1) %
+        members.length;
+
+    }
+
+  }
+
+  return members[index];
+
+}
+
+
+/* =========================================================
+   FIND HIGHEST CURRENT RATING
+   ========================================================= */
+
+function getHighestRating(
+  stats
+) {
+
+  const categories = [
+
+    {
+      key:
+        "chess_rapid",
+      label:
+        "Rapid"
+    },
+
+    {
+      key:
+        "chess_blitz",
+      label:
+        "Blitz"
+    },
+
+    {
+      key:
+        "chess_bullet",
+      label:
+        "Bullet"
+    },
+
+    {
+      key:
+        "chess_daily",
+      label:
+        "Daily"
+    }
+
+  ];
+
+  const ratings = [];
+
+  categories.forEach(
+    category => {
+
+      const section =
+        stats[
+          category.key
+        ];
+
+      const rating =
+        section &&
+        section.last &&
+        Number(
+          section.last.rating
+        );
+
+      if (
+        Number.isFinite(
+          rating
+        )
+      ) {
+
+        ratings.push({
+          rating,
+          label:
+            category.label
+        });
+
+      }
+
+    }
+  );
+
+  if (
+    !ratings.length
+  ) {
+
+    return {
+      rating: "—",
+      label:
+        "No Current Rating"
+    };
+
+  }
+
+  ratings.sort(
+    (a, b) =>
+      b.rating -
+      a.rating
+  );
+
+  return ratings[0];
+
+}
+
+
+/* =========================================================
+   DEFAULT AVATAR
+   ========================================================= */
+
+function makeDefaultAvatar() {
+
+  /*
+     Self-contained fallback image.
+     No external asset required.
+  */
+
+  const svg = `
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 300 300"
+  >
+
+    <defs>
+
+      <linearGradient
+        id="bg"
+        x1="0"
+        y1="0"
+        x2="1"
+        y2="1"
+      >
+
+        <stop
+          offset="0%"
+          stop-color="#4879a9"
+        />
+
+        <stop
+          offset="100%"
+          stop-color="#102c52"
+        />
+
+      </linearGradient>
+
+    </defs>
+
+    <rect
+      width="300"
+      height="300"
+      fill="url(#bg)"
+    />
+
+    <circle
+      cx="150"
+      cy="150"
+      r="116"
+      fill="none"
+      stroke="#f4d987"
+      stroke-width="5"
+      opacity=".75"
+    />
+
+    <text
+      x="150"
+      y="194"
+      text-anchor="middle"
+      font-size="132"
+      font-family="Georgia"
+      fill="#fff5cf"
+    >
+      ♟
+    </text>
+
+  </svg>
+  `;
+
+  return (
+    "data:image/svg+xml;charset=UTF-8," +
+    encodeURIComponent(svg)
+  );
+
+}
+
+
+/* =========================================================
+   FORMAT JOIN DATE
+   ========================================================= */
+
+function formatJoined(
+  timestamp
+) {
+
+  if (
+    !timestamp
+  ) {
+
+    return "";
+  }
+
+  const date =
+    new Date(
+      timestamp * 1000
+    );
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+
+    return "";
+  }
+
+  return (
+    "ACFA Member Since • " +
+    date.toLocaleDateString(
+      "en-US",
+      {
+        month:
+          "long",
+
+        day:
+          "numeric",
+
+        year:
+          "numeric"
+      }
+    )
+  );
+
+}
+
+
+/* =========================================================
+   DISPLAY PLAYER
+   ========================================================= */
+
+function displayPlayer(
+  member,
+  profile,
+  stats,
+  week
+) {
+
+  const username =
+    profile.username ||
+    member.username;
+
+  const avatar =
+    profile.avatar ||
+    makeDefaultAvatar();
+
+  const name =
+    profile.name || "";
+
+  const title =
+    profile.title || "";
+
+  const highest =
+    getHighestRating(
+      stats
+    );
+
+  document.getElementById(
+    "avatar"
+  ).src =
+    avatar;
+
+  document.getElementById(
+    "avatar"
+  ).onerror =
+    function() {
+
+      this.src =
+        makeDefaultAvatar();
+
+    };
+
+  document.getElementById(
+    "username"
+  ).textContent =
+    "@" + username;
+
+  document.getElementById(
+    "realName"
+  ).textContent =
+    name;
+
+  document.getElementById(
+    "rating"
+  ).textContent =
+    highest.rating;
+
+  document.getElementById(
+    "ratingType"
+  ).textContent =
+    highest.label +
+    " • Highest Current";
+
+  const badge =
+    document.getElementById(
+      "titleBadge"
+    );
+
+  if (
+    title
+  ) {
+
+    badge.textContent =
+      title;
+
+    badge.style.display =
+      "inline-block";
+
+  } else {
+
+    badge.style.display =
+      "none";
+
+  }
+
+  const joined =
+    formatJoined(
+      member.joined
+    );
+
+  document.getElementById(
+    "memberSince"
+  ).textContent =
+    joined;
+
+  document.getElementById(
+    "weekDisplay"
+  ).textContent =
+    formatWeek(
+      week.start,
+      week.end
+    );
+
+  document.getElementById(
+    "profileButton"
+  ).href =
+    `https://www.chess.com/member/${encodeURIComponent(username)}`;
+
+  document.getElementById(
+    "loading"
+  ).style.display =
+    "none";
+
+  document.getElementById(
+    "playerContent"
+  ).style.display =
+    "block";
+
+}
+
+
+/* =========================================================
+   LOAD PLAYER OF THE WEEK
+   ========================================================= */
+
+async function loadPlayerOfWeek() {
+
+  try {
+
+    const week =
+      getWeekInfo();
+
+    /*
+       STEP 1:
+       Get ACFA membership.
+    */
+
+    const clubData =
+      await chessFetch(
+        `https://api.chess.com/pub/club/${CLUB_SLUG}/members`
+      );
+
+    const members =
+      extractMembers(
+        clubData
+      );
+
+    if (
+      members.length === 0
+    ) {
+
+      throw new Error(
+        "Chess.com returned an empty ACFA member list."
+      );
+
+    }
+
+    /*
+       STEP 2:
+       Deterministically select the
+       week's member.
+    */
+
+    const selected =
+      selectWeeklyPlayer(
+        members,
+        week.key
+      );
+
+    const username =
+      selected.username;
+
+    /*
+       STEP 3:
+       Fetch only the selected member's
+       detailed information.
+    */
+
+    const [
+      profile,
+      stats
+    ] =
+      await Promise.all([
+
+        chessFetch(
+          `https://api.chess.com/pub/player/${encodeURIComponent(username)}`
+        ),
+
+        chessFetch(
+          `https://api.chess.com/pub/player/${encodeURIComponent(username)}/stats`
+        )
+
+      ]);
+
+    /*
+       STEP 4:
+       Present the winner.
+    */
+
+    displayPlayer(
+      selected,
+      profile,
+      stats,
+      week
+    );
+
+  }
+
+  catch(error) {
+
+    console.error(
+      "ACFA Player of the Week:",
+      error
+    );
+
+    document.getElementById(
+      "loading"
+    ).style.display =
+      "none";
+
+    document.getElementById(
+      "error"
+    ).style.display =
+      "block";
+
+    document.getElementById(
+      "errorMessage"
+    ).textContent =
+      "The ACFA Player of the Week could not be loaded from Chess.com right now. Please try again shortly.";
+
+  }
+
+}
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+createParticles();
+
+loadPlayerOfWeek();
+
+</script>
+
+</body>
+</html>
